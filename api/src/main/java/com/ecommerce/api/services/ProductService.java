@@ -4,19 +4,20 @@ import com.ecommerce.api.dto.ProductDTO;
 import com.ecommerce.api.entities.Product;
 import com.ecommerce.api.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class ProductService {
     @Autowired
-    private ProductRepository productRepository;
-
-    @Transactional(readOnly = true)
-
+    ProductRepository productRepository;
+@Transactional(readOnly = true)
+    public ProductDTO getProductById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow();
+        return new ProductDTO(product.getName(), product.getPrice(), product.getDescription(), product.getImgUrl());
+    }
+@Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         List<Product> products = productRepository.findAll();
         List<ProductDTO> productsDTO = new ArrayList<>();
@@ -25,13 +26,7 @@ public class ProductService {
         }
         return productsDTO;
     }
-    
-    public ProductDTO getProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow();
-        return new ProductDTO(product.getName(), product.getPrice(), product.getDescription(), product.getImgUrl());
-    }
-
-    @Transactional
+@Transactional
     public ProductDTO create(ProductDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.getName());
@@ -42,8 +37,7 @@ public class ProductService {
         productRepository.save(product);
         return new ProductDTO(product.getName(), product.getPrice(), product.getDescription(), product.getImgUrl());
     }
-
-    @Transactional
+@Transactional
     public ProductDTO update(Long id, ProductDTO productDTO) {
         Product product = new Product();
         product.setId(id);
@@ -54,9 +48,10 @@ public class ProductService {
         product.setCategories(productDTO.getCategories());
         productRepository.save(product);
         return new ProductDTO(product.getName(), product.getPrice(), product.getDescription(), product.getImgUrl());
-    }
 
-    public  ProductDTO delete(Long id) {
+    }
+@Transactional
+    public ProductDTO delete(Long id) {
         productRepository.deleteById(id);
         return null;
     }
