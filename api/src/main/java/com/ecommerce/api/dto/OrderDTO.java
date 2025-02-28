@@ -1,6 +1,8 @@
 package com.ecommerce.api.dto;
 
 import com.ecommerce.api.entities.OrderStatus;
+import com.ecommerce.api.entities.Payment;
+import com.ecommerce.api.entities.User;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -21,4 +23,7 @@ public class OrderDTO {
     private PaymentDTO payment;
     @NotEmpty(message = "É obrigatório selecionar pelo menos um item")
     private List<OrderItemDTO> orderItems;
+
+    public OrderDTO(Long id, LocalDateTime moment, OrderStatus status, User user, Payment payment) {
+    }
 }
